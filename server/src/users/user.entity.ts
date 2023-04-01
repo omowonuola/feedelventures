@@ -14,6 +14,13 @@ export class UserEntity {
   username: string;
 
   @ApiProperty({
+    example: 'trespass@gmail.com',
+    description: 'The Email',
+  })
+  @Column({ unique: true })
+  email: string;
+
+  @ApiProperty({
     example: 'Password',
     description: 'user password',
   })

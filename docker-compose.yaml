@@ -15,7 +15,7 @@ services:
             - DB_PORT=3306
             - DB_USERNAME=root
             - DB_PASSWORD=birmingham
-            - DB_DATABASE=userdatabase
+            - DB_DATABASE=acronyms
             - JWT_SECRET='{dZqC_/KBzNSuPT~@!Gr5NHG^j]Jz"VQf(6>Q,\dp?_z9eC(C$-bJCEwRM}pC=2!'
 
 #   db:
