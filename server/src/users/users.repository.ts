@@ -127,17 +127,10 @@ export class UserRepository {
     });
   }
 
-  async logout(
-    @Req() request: Request,
-    @Res() response: Response,
-  ): Promise<any> {
-    request.session.destroy((error) => {
-        if (error) {
-          // Handle error
-          return;
-        }
-      
-        response.clearCookie('access_token');
-        response.sendStatus(200);
-  }
+  //   async logout(@Req() request: Request): Promise<any> {
+  //     request.session.destroy();
+
+  //     // response.clearCookie('access_token');
+  //     // response.sendStatus(200);
+  //   }
 }
