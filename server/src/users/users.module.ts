@@ -8,10 +8,13 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserRepository } from './users.repository';
 import { JwtStrategy } from './jwt-passport';
 import { UserEntity } from './user.entity';
+import { Mailer } from '../mail/mail.service.ts/nodemailer';
+import { MailerService } from '@nestjs-modules/mailer';
 
 @Module({
   imports: [
     ConfigModule,
+    // MailerService,
     PassportModule.register({ defaultStrategy: 'jwt' }),
     JwtModule.register({
       // imports: [ConfigModule],

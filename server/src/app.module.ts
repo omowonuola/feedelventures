@@ -1,8 +1,10 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { MailModule } from './mail/mail.modules';
 import { UserEntity } from './users/user.entity';
 import { UsersModule } from './users/users.module';
+// import { configValidationSchema } from './config.schema';
 
 @Module({
   imports: [
@@ -11,6 +13,7 @@ import { UsersModule } from './users/users.module';
       // validationSchema: configValidationSchema,
     }),
     UsersModule,
+    // MailModule,
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
       inject: [ConfigService],

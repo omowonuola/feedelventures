@@ -1,7 +1,5 @@
 import {
-  IsEmail,
   IsNotEmpty,
-  IsOptional,
   IsString,
   Matches,
   MaxLength,
@@ -9,25 +7,7 @@ import {
 } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
-export class UserCredentialsDto {
-  @ApiProperty({
-    example: 'arieli',
-    description: 'Username',
-  })
-  @IsString()
-  @IsOptional()
-  @MinLength(4)
-  @MaxLength(20)
-  username: string;
-
-  @ApiProperty({
-    example: 'peterdoe@gmail.com',
-    description: 'Email',
-  })
-  @IsNotEmpty()
-  @IsEmail()
-  email: string;
-
+export class ChangePasswordDto {
   @ApiProperty({
     example: 'Johndoe@12',
     description: 'Password',
@@ -42,5 +22,13 @@ export class UserCredentialsDto {
       message: 'password is too weak',
     },
   )
-  password: string;
+  readonly password: string;
+
+  @ApiProperty({
+    example: 'Johndoe@12',
+    description: 'confirmPassword',
+  })
+  @IsNotEmpty()
+  @IsString()
+  readonly confirmPassword: string;
 }

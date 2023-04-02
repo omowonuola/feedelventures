@@ -1,8 +1,10 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, Param, Patch, Post } from '@nestjs/common';
 import { UserService } from './users.service';
 import { UserCredentialsDto } from './dto/user-credentials.dto';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { UserEntity } from './user.entity';
+import { ForgotPasswordDto } from './dto/forgot-password.dto';
+import { ChangePasswordDto } from './dto/change-password.dto';
 
 @Controller('api/users')
 @ApiTags('user')
@@ -29,5 +31,30 @@ export class UserController {
     @Body() authCredentialsDto: UserCredentialsDto,
   ): Promise<{ accessToken: string }> {
     return this.userService.signInUser(authCredentialsDto);
+  }
+
+  @Post('/forgotpassword')
+  @ApiOperation({ summary: 'Forgot PPasword' })
+  @ApiResponse({
+    description: 'Request for a password reset link',
+    type: UserEntity,
+  })
+  forgotPassword(
+    @Body() forgotPasswordDto: ForgotPasswordDto,
+  ): Promise<{ resetLink: string }> {
+    return this.userService.forgotPassword(forgotPasswordDto);
+  }
+
+  @Patch('/changepassword/:accesstoken')
+  @ApiOperation({ summary: 'Change Password' })
+  @ApiResponse({
+    description: 'Request for a password change',
+    type: UserEntity,
+  })
+  changePassword(
+    @Param('accesstoken') accesstoken: string,
+    @Body() changePasswordDto: ChangePasswordDto,
+  ): Promise<UserEntity> {
+    return this.userService.changePassword(accesstoken, changePasswordDto);
   }
 }
