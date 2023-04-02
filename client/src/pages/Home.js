@@ -1,4 +1,4 @@
-import { StyledTitle, StyledSubTitle, Avatar, StyledButton } from "../components/Styles";
+import { StyledTitle, StyledSubTitle, Avatar, StyledButton, ButtonGroup } from "../components/Styles";
 
 // Logo
 import Logo from "./../assets/logo.png"
@@ -15,7 +15,7 @@ const Home = () => {
                     width: "100%",
                     padding: "15px",
                     display: "flex",
-                    // justifyContent: "flex-start"
+                    justifyContent: "flex-start"
                 }}
             >
                 <Avatar image={Logo} />
@@ -26,8 +26,12 @@ const Home = () => {
             <StyledSubTitle size={27}>
                 Explore
             </StyledSubTitle>
-            <StyledButton to="/login">Login</StyledButton>
-            <StyledButton to="/signup">Signup</StyledButton>
+
+            <ButtonGroup>
+                <StyledButton to="/login">Login</StyledButton>
+                <StyledButton to="/signup">Signup</StyledButton>
+            </ButtonGroup>
+
         </div>
     )
 }

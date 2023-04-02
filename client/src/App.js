@@ -1,5 +1,6 @@
 // Pages
 import Home from "./pages/Home";
+import Login from "./pages/Login"
 
 // styled components
 import { StyledContainer } from "./components/Styles";
@@ -11,7 +12,7 @@ function App() {
   return (
     <Router>
       <StyledContainer>
-        <Home/>
+        <Login/>
       </StyledContainer>
     </Router>
 
