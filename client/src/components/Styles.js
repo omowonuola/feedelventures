@@ -66,7 +66,8 @@ export const StyledButton = styled(Link)`
     color: ${colors.green};
     text-decoration: none;
     text-align: center;
-    transition: ease-in-out 0.3s
+    transition: ease-in-out 0.3s;
+    outline: 0;
 
     &:hover{
         background-color: ${colors.primary};
@@ -125,7 +126,8 @@ export const StyledFormButton = styled.button`
     border: 2px solid ${colors.theme}
     border-radius: 25px;
     color: ${colors.theme};
-    transition: ease-in-out 0.3s
+    transition: ease-in-out 0.3s;
+    outline: 0;
 
     &:hover{
         background-color: ${colors.theme};
@@ -140,7 +142,7 @@ export const ErrorMsg = styled.div`
     margin-top: -5px;
     margin-bottom: 10px;
     text-align: left;
-`
+`;
 
 export const ExtraText = styled.p`
     font-size: ${(props) => props.size}px;
@@ -148,6 +150,18 @@ export const ExtraText = styled.p`
     color: ${(props) => (props.color ? props.color : colors.dark2)}
     padding: 2px;
     margin-top: 10px;
+`
+
+export const TextLink = styled(Link)`
+    text-decoration: none;
+    color: ${colors.theme};
+    transition: ease-in-out 0.3s;
+
+    &:hover {
+        text-decoration: uderline;
+        letter-spacing: 2px;
+        font-weight: bold;
+    }
 `
 
 // Icons
@@ -158,4 +172,12 @@ export const StyledIcon = styled.p`
     top: 35px;
     ${(props) => props.right && `right: 15px; `};
     ${(props) => !props.right && `left: 15px`}
+`
+
+// copyright
+export const CopyrightText = styled.p`
+    padding: 5px;
+    margin: 20px;
+    text-align: center;
+    color: ${colors.light2}
 `

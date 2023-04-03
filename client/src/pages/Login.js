@@ -1,6 +1,6 @@
 import {StyledTextInput, StyledFormArea, 
     StyledFormButton, StyledLabel,StyledTitle, 
-    Avatar, ButtonGroup, colors} from './../components/Styles';
+    Avatar, ButtonGroup, colors, ExtraText, TextLink, CopyrightText} from './../components/Styles';
 
 import Logo from './../assets/logo.png'
 
@@ -13,7 +13,13 @@ import * as Yup from 'yup'
 // icons
 import {FiMail, FiLock} from 'react-icons/fi';
 
-const Login = () => {
+// auth & redux
+import {connect} from 'react-redux';
+import { loginUser } from '../auth/actions/userActions';
+import {useNavigate} from "react-router-dom";
+
+const Login = ({loginUser}) => {
+    const history = useNavigate()
     return (
         <div>
             <StyledFormArea>
@@ -33,11 +39,12 @@ const Login = () => {
                             password: Yup.string().required("Required")
                         })
                     }
-                    onSubmit={(values, {setSubmitting}) => {
+                    onSubmit={(values, {setSubmitting, setFieldError}) => {
                         console.log(values)
+                        loginUser(values, history, setFieldError, setSubmitting)
                     }}
                 >
-                    {() => (
+                    {({isSubmitting}) => (
                         <Form>
                             <TextInput 
                                 name="email"
@@ -56,17 +63,32 @@ const Login = () => {
                             />
 
                             <ButtonGroup>
-                                <StyledFormButton type="submit">
+                                {!isSubmitting && (<StyledFormButton type="submit">
                                     Login
-                                </StyledFormButton>
+                                </StyledFormButton>)}
                             </ButtonGroup>
+{/* 
+                            {isSubmitting && (
+                                <Audio
+                                ariaLabel="ThreeDots"
+                                    color={colors.theme}
+                                    height="49"
+                                    width="100"
+                                />
+                            )} */}
                         </Form>
                     )}
                 </Formik>
+                <ExtraText>
+                    New User? <TextLink to="/signup">Signup</TextLink>
+                </ExtraText>
             </StyledFormArea>
+            <CopyrightText>
+                All rights reserved &copy; 2023
+            </CopyrightText>
         </div>
 
     )
 }
 
-export default Login;
+export default connect(null, {loginUser})(Login);
