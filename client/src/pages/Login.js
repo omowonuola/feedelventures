@@ -19,7 +19,7 @@ import { loginUser } from '../auth/actions/userActions';
 import {useNavigate} from "react-router-dom";
 
 const Login = ({loginUser}) => {
-    const history = useNavigate()
+    const navigate = useNavigate()
     return (
         <div>
             <StyledFormArea>
@@ -41,7 +41,7 @@ const Login = ({loginUser}) => {
                     }
                     onSubmit={(values, {setSubmitting, setFieldError}) => {
                         console.log(values)
-                        loginUser(values, history, setFieldError, setSubmitting)
+                        loginUser(values, navigate, setFieldError, setSubmitting)
                     }}
                 >
                     {({isSubmitting}) => (

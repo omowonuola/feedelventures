@@ -58,15 +58,16 @@ export class UserRepository {
   async signInUser(userCredentialsDto: UserCredentialsDto): Promise<any> {
     const { email, password } = userCredentialsDto;
     if (!email || !password) {
-      throw new UnauthorizedException('Please check your login details');
+      throw new UnauthorizedException('Please add email and password');
     }
     const user = await this.userEntity.findOne({ where: { email } });
+    console.log(user.id);
 
     if (user && (await bcrypt.compare(password, user.password))) {
       const payload: JwtPayload = { email };
       const accessToken: string = await this.jwtService.sign(payload);
 
-      return { email, accessToken };
+      return { status: 'SUCCESS', id: user?.id, email, accessToken };
     } else {
       throw new UnauthorizedException('Please check your login details');
     }
