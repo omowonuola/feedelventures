@@ -79,13 +79,14 @@ export class UserRepository {
     }
     const user = await this.userEntity.findOne({ where: { email } });
 
-    if (!user) return 'invalid email';
+    if (!user) throw new UnauthorizedException('invalid email');
     const accessToken: string = this.jwtService.sign(
       { id: user.id },
       { expiresIn: '20m' },
     );
 
     return {
+      status: 'SUCCESS',
       resetLink: `${process.env.CLIENT_URL}/resetpassword/${accessToken}`,
     };
     // const data = await this.mailerService.sendEmail({ email, accessToken });

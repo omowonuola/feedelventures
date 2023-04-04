@@ -84,3 +84,67 @@ export const logoutUser = (history) => {
         history.push("/login");
     }
 }
+
+
+export const forgottenPassword = (credentials, history, setFieldError, setSubmitting) => {
+    return () => {
+    // check for user details 
+
+        axios.post("http://localhost:8080/api/users/forgotpassword/",
+        credentials,
+        {
+            headers: {
+                "Content-Type": "application/json"
+            }
+        }
+        ).then((response) => {
+            const {data} = response
+
+            if(data.error === "Unauthorized" || data.error === "Bad Request") {
+                const {message} = data;
+
+                // check for specific error
+                if(message.error.includes("Unauthorized") || message.message.includes("email")) {
+                    setFieldError("email", message);
+                }
+            } else if (data.status === "PENDING") {
+                const {email} = credentials
+                history.push(`/emailsent/${email}/${true}`)   
+            }
+
+            setSubmitting(false);
+        }).catch(err => console.error(err))
+    }
+}
+
+
+export const resetPassword = (credentials, history, setFieldError, setSubmitting) => {
+    return () => {
+    // check for user details 
+
+        axios.post("http://localhost:8080/api/users/changepassword/",
+        credentials,
+        {
+            headers: {
+                "Content-Type": "application/json"
+            }
+        }
+        ).then((response) => {
+            const {data} = response
+
+            if(data.error === "Unauthorized" || data.error === "Bad Request") {
+                const {message} = data;
+
+                // check for specific error
+                if(message.error.includes("Unauthorized") || message.message.includes("password")) {
+                    setFieldError("newPassword", message);
+                }
+            } else if (data.status === "PENDING") {
+                const {email} = credentials
+                history.push(`/emailsent/`)   
+            }
+
+            setSubmitting(false);
+        }).catch(err => console.error(err))
+    }
+}

@@ -15,28 +15,28 @@ import {FiMail, FiLock} from 'react-icons/fi';
 
 // auth & redux
 import {connect} from 'react-redux';
-import { loginUser } from '../auth/actions/userActions';
-import {useHistory} from "react-router-dom";
+import { forgottenPassword } from '../auth/actions/userActions';
+import {useHistory, useParams} from "react-router-dom";
 
-const Login = ({loginUser}) => {
+const ForgottenPassword = ({loginUser}) => {
     const history = useHistory()
+    const {userEmail} = useParams()
     return (
         <div>
             <StyledFormArea>
                 <Avatar image={Logo} />
                 <StyledTitle color={colors.theme} size={30}>
-                    Member Login
+                    Password Reset
                 </StyledTitle>
                 <Formik
                     initialValues={{
-                        email: "",
-                        password: "",
+                        email: userEmail,
+                        redirectUrl: "http://locathost:3000/resetpassword/"
                     }}
                     validationSchema={
                         Yup.object({
                             email: Yup.string().email("Invalid email address")
                             .required("Required"),
-                            password: Yup.string().required("Required")
                         })
                     }
                     onSubmit={(values, {setSubmitting, setFieldError}) => {
@@ -49,22 +49,14 @@ const Login = ({loginUser}) => {
                             <TextInput 
                                 name="email"
                                 type="text"
-                                label="Email Address"
+                                label="Enter Your Email Address"
                                 placeholder="johndoe@gmail.com"
                                 icon={<FiMail/>}
                             />
 
-                            <TextInput 
-                                name="password"
-                                type="password"
-                                label="Password"
-                                placeholder="********"
-                                icon={<FiLock />}
-                            />
-
                             <ButtonGroup>
                                 {!isSubmitting && (<StyledFormButton type="submit">
-                                    Login
+                                    Submit
                                 </StyledFormButton>)}
                             </ButtonGroup>
 {/* 
@@ -79,12 +71,6 @@ const Login = ({loginUser}) => {
                         </Form>
                     )}
                 </Formik>
-                <ExtraText>
-                    Forgotten Password? <TextLink to="/forgottenpassword">Reset Password</TextLink>
-                </ExtraText>
-                <ExtraText>
-                    New User? <TextLink to="/signup">Signup</TextLink>
-                </ExtraText>
             </StyledFormArea>
             <CopyrightText>
                 All rights reserved &copy; 2023
@@ -94,4 +80,4 @@ const Login = ({loginUser}) => {
     )
 }
 
-export default connect(null, {loginUser})(Login);
+export default connect(null, {forgottenPassword})(ForgottenPassword);

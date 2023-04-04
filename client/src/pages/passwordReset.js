@@ -16,55 +16,58 @@ import {FiMail, FiLock} from 'react-icons/fi';
 // auth & redux
 import {connect} from 'react-redux';
 import { loginUser } from '../auth/actions/userActions';
-import {useHistory} from "react-router-dom";
+import {useHistory, useParams} from "react-router-dom";
 
-const Login = ({loginUser}) => {
+const PasswordReset = ({loginUser}) => {
     const history = useHistory()
+    const {userId, resetString } = useParams()
     return (
         <div>
             <StyledFormArea>
                 <Avatar image={Logo} />
                 <StyledTitle color={colors.theme} size={30}>
-                    Member Login
+                    Password Reset
                 </StyledTitle>
                 <Formik
                     initialValues={{
-                        email: "",
-                        password: "",
+                        newPassword: "",
+                        confirmNewPassword: "",
+                        userId,
+                        resetString
                     }}
                     validationSchema={
                         Yup.object({
-                            email: Yup.string().email("Invalid email address")
-                            .required("Required"),
-                            password: Yup.string().required("Required")
+                            newPassword: Yup.string().required("Required"),
+                            confirmNewPassword: Yup.string().required
+                            .oneOf([Yup.ref("newPassword")], "Passwords must match")
                         })
                     }
                     onSubmit={(values, {setSubmitting, setFieldError}) => {
                         
-                        loginUser(values, history, setFieldError, setSubmitting)
+                        resetPassword(values, history, setFieldError, setSubmitting)
                     }}
                 >
                     {({isSubmitting}) => (
                         <Form>
                             <TextInput 
-                                name="email"
-                                type="text"
-                                label="Email Address"
-                                placeholder="johndoe@gmail.com"
-                                icon={<FiMail/>}
+                                name="newPassword"
+                                type="password"
+                                label="New Password"
+                                placeholder="********"
+                                icon={<FiLock />}
                             />
 
                             <TextInput 
-                                name="password"
+                                name="confirmNewpassword"
                                 type="password"
-                                label="Password"
+                                label="Confirm New Password"
                                 placeholder="********"
                                 icon={<FiLock />}
                             />
 
                             <ButtonGroup>
                                 {!isSubmitting && (<StyledFormButton type="submit">
-                                    Login
+                                    Submit
                                 </StyledFormButton>)}
                             </ButtonGroup>
 {/* 
@@ -79,12 +82,6 @@ const Login = ({loginUser}) => {
                         </Form>
                     )}
                 </Formik>
-                <ExtraText>
-                    Forgotten Password? <TextLink to="/forgottenpassword">Reset Password</TextLink>
-                </ExtraText>
-                <ExtraText>
-                    New User? <TextLink to="/signup">Signup</TextLink>
-                </ExtraText>
             </StyledFormArea>
             <CopyrightText>
                 All rights reserved &copy; 2023
@@ -94,4 +91,4 @@ const Login = ({loginUser}) => {
     )
 }
 
-export default connect(null, {loginUser})(Login);
+export default connect(null, {resetPassword})(PasswordReset);
