@@ -18,7 +18,7 @@ import {connect} from 'react-redux';
 import { forgottenPassword } from '../auth/actions/userActions';
 import {useHistory, useParams} from "react-router-dom";
 
-const ForgottenPassword = ({loginUser}) => {
+const ForgottenPassword = ({forgottenPassword}) => {
     const history = useHistory()
     const {userEmail} = useParams()
     return (
@@ -31,7 +31,7 @@ const ForgottenPassword = ({loginUser}) => {
                 <Formik
                     initialValues={{
                         email: userEmail,
-                        redirectUrl: "http://locathost:3000/resetpassword/"
+                        redirectUrl: "http://locathost:3000/passwordreset/"
                     }}
                     validationSchema={
                         Yup.object({
@@ -41,7 +41,7 @@ const ForgottenPassword = ({loginUser}) => {
                     }
                     onSubmit={(values, {setSubmitting, setFieldError}) => {
                         
-                        loginUser(values, history, setFieldError, setSubmitting)
+                        forgottenPassword(values, history, setFieldError, setSubmitting)
                     }}
                 >
                     {({isSubmitting}) => (

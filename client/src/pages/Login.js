@@ -16,10 +16,11 @@ import {FiMail, FiLock} from 'react-icons/fi';
 // auth & redux
 import {connect} from 'react-redux';
 import { loginUser } from '../auth/actions/userActions';
-import {useHistory} from "react-router-dom";
+import {useHistory, useParams} from "react-router-dom";
 
 const Login = ({loginUser}) => {
     const history = useHistory()
+    const {userEmail} = useParams();
     return (
         <div>
             <StyledFormArea>
@@ -29,7 +30,7 @@ const Login = ({loginUser}) => {
                 </StyledTitle>
                 <Formik
                     initialValues={{
-                        email: "",
+                        email: userEmail,
                         password: "",
                     }}
                     validationSchema={

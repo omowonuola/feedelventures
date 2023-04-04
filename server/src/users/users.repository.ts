@@ -12,7 +12,7 @@ import { Repository } from 'typeorm';
 import { UserEntity } from './user.entity';
 import { UserCredentialsDto } from './dto/user-credentials.dto';
 import { ForgotPasswordDto } from './dto/forgot-password.dto';
-import { Mailer } from '../mail/mail.service.ts/nodemailer';
+import { MailService } from '../mail/nodemailer.service';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
 import { JwtPayload } from './jwt-payload';
@@ -23,7 +23,8 @@ export class UserRepository {
   constructor(
     @InjectRepository(UserEntity)
     private userEntity: Repository<UserEntity>,
-    private jwtService: JwtService, // private mailerService: Mailer,
+    private jwtService: JwtService,
+    private mailerService: MailService,
   ) {}
 
   async createUser(userCredentialsDto: UserCredentialsDto): Promise<any> {
@@ -80,27 +81,31 @@ export class UserRepository {
     const user = await this.userEntity.findOne({ where: { email } });
 
     if (!user) throw new UnauthorizedException('invalid email');
+
+    // to calculate the time for JWT token to expire
+    const now = new Date();
+    const expirationTime = now.getTime() + 20 * 60 * 1000; // add 20 minutes in milliseconds
+    const expirationTimeStamp = Math.floor(expirationTime / 1000);
+
     const accessToken: string = this.jwtService.sign(
       { id: user.id },
-      { expiresIn: '20m' },
+      { expiresIn: expirationTimeStamp },
     );
-
-    return {
-      status: 'SUCCESS',
-      resetLink: `${process.env.CLIENT_URL}/resetpassword/${accessToken}`,
-    };
-    // const data = await this.mailerService.sendEmail({ email, accessToken });
+    const data = await this.mailerService.sendEmail({ email, accessToken });
+    if (data) {
+      return { status: 'SUCCESS', message: 'Password Reset Email Sent' };
+    }
   }
 
   async changePassword(
     accessToken: string,
     changePasswordDto: ChangePasswordDto,
-  ): Promise<UserEntity> {
-    const { password, confirmPassword } = changePasswordDto;
+  ): Promise<any> {
+    const { newPassword, confirmNewPassword } = changePasswordDto;
 
-    if (!password) {
+    if (!newPassword || !confirmNewPassword) {
       throw new UnauthorizedException('Please add a new password');
-    } else if (password !== confirmPassword) {
+    } else if (newPassword !== confirmNewPassword) {
       throw new UnauthorizedException('Password must match');
     }
     const decryptToken = JSON.parse(
@@ -116,21 +121,25 @@ export class UserRepository {
     }
     // hash the password
     const salt = await bcrypt.genSalt();
-    const hashedPassword = await bcrypt.hash(password, salt);
-    user.password = password;
+    const hashedPassword = await bcrypt.hash(newPassword, salt);
+    user.password = newPassword;
     // save new password in the database
-    return await this.userEntity.save({
+    const userDetails = await this.userEntity.save({
       id,
       username: user.username,
       email: user.email,
       password: hashedPassword,
     });
+
+    if (userDetails) {
+      return { status: 'SUCCESS', userDetails };
+    }
   }
 
-  //   async logout(@Req() request: Request): Promise<any> {
-  //     request.session.destroy();
+  // async logout(@Req() request: Request): Promise<any> {
+  //   request.session.destroy();
 
-  //     // response.clearCookie('access_token');
-  //     // response.sendStatus(200);
-  //   }
+  //   // response.clearCookie('access_token');
+  //   // response.sendStatus(200);
+  // }
 }

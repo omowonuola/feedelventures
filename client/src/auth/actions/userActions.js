@@ -1,10 +1,10 @@
 import axios from 'axios'
-
 import { sessionService } from 'redux-react-session'
 
+const localUrl = "http://localhost:8080/"
 export const signUpUser = (credentials, history, setFieldError, setSubmitting) => {
     return (dispatch) => {
-        axios.post("http://localhost:8080/api/users/signup/",
+        axios.post(`${localUrl}api/users/signup/`,
         credentials,
         {
             headers: {
@@ -90,7 +90,7 @@ export const forgottenPassword = (credentials, history, setFieldError, setSubmit
     return () => {
     // check for user details 
 
-        axios.post("http://localhost:8080/api/users/forgotpassword/",
+        axios.post(`${localUrl}api/users/forgotpassword/`,
         credentials,
         {
             headers: {
@@ -107,7 +107,7 @@ export const forgottenPassword = (credentials, history, setFieldError, setSubmit
                 if(message.error.includes("Unauthorized") || message.message.includes("email")) {
                     setFieldError("email", message);
                 }
-            } else if (data.status === "PENDING") {
+            } else if (data.status === "SUCCESS") {
                 const {email} = credentials
                 history.push(`/emailsent/${email}/${true}`)   
             }
@@ -118,11 +118,11 @@ export const forgottenPassword = (credentials, history, setFieldError, setSubmit
 }
 
 
-export const resetPassword = (credentials, history, setFieldError, setSubmitting) => {
+export const resetPassword = (credentials, history, setFieldError, setSubmitting, accessToken) => {
     return () => {
     // check for user details 
-
-        axios.post("http://localhost:8080/api/users/changepassword/",
+        axios.patch(`${localUrl}api/users/changepassword/${accessToken}`,
+        
         credentials,
         {
             headers: {
@@ -139,8 +139,7 @@ export const resetPassword = (credentials, history, setFieldError, setSubmitting
                 if(message.error.includes("Unauthorized") || message.message.includes("password")) {
                     setFieldError("newPassword", message);
                 }
-            } else if (data.status === "PENDING") {
-                const {email} = credentials
+            } else if (data.status === "SUCCESS") {
                 history.push(`/emailsent/`)   
             }
 

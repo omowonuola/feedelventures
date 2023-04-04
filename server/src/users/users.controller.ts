@@ -45,16 +45,16 @@ export class UserController {
     return this.userService.forgotPassword(forgotPasswordDto);
   }
 
-  @Patch('/changepassword/:accesstoken')
+  @Patch('/changepassword/:accessToken')
   @ApiOperation({ summary: 'Change Password' })
   @ApiResponse({
     description: 'Request for a password change',
     type: UserEntity,
   })
   changePassword(
-    @Param('accesstoken') accesstoken: string,
+    @Param('accessToken') accessToken: string,
     @Body() changePasswordDto: ChangePasswordDto,
   ): Promise<UserEntity> {
-    return this.userService.changePassword(accesstoken, changePasswordDto);
+    return this.userService.changePassword(accessToken, changePasswordDto);
   }
 }

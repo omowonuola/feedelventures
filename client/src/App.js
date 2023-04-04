@@ -13,6 +13,8 @@ import AuthRoute from "./components/AuthRoute";
 import BasicRoute from "./components/BasicRoute";
 import { connect } from "react-redux";
 import ForgottenPassword from "./pages/forgottenPassword";
+import EmailSent from "./pages/EmailSent";
+import PasswordReset from "./pages/passwordReset";
 
 function App({checked}) {
   return (
@@ -20,7 +22,9 @@ function App({checked}) {
       {checked &&
         <StyledContainer>
           <Switch>
+          <BasicRoute path='/passwordreset/:accessToken/'><PasswordReset/></BasicRoute>
             <BasicRoute path='/forgottenpassword'><ForgottenPassword/></BasicRoute>
+            <BasicRoute path='/emailsent/:userEmail?/:reset?'><EmailSent/></BasicRoute>
             <BasicRoute path='/signup'><Signup/></BasicRoute>
        
             <BasicRoute path='/login'><Login/></BasicRoute>

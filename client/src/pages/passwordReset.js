@@ -15,12 +15,12 @@ import {FiMail, FiLock} from 'react-icons/fi';
 
 // auth & redux
 import {connect} from 'react-redux';
-import { loginUser } from '../auth/actions/userActions';
+import { resetPassword } from '../auth/actions/userActions';
 import {useHistory, useParams} from "react-router-dom";
 
-const PasswordReset = ({loginUser}) => {
+const PasswordReset = ({resetPassword}) => {
     const history = useHistory()
-    const {userId, resetString } = useParams()
+    const {accessToken} = useParams()
     return (
         <div>
             <StyledFormArea>
@@ -32,19 +32,19 @@ const PasswordReset = ({loginUser}) => {
                     initialValues={{
                         newPassword: "",
                         confirmNewPassword: "",
-                        userId,
-                        resetString
+                        accessToken,
+                        // resetString
                     }}
                     validationSchema={
                         Yup.object({
                             newPassword: Yup.string().required("Required"),
-                            confirmNewPassword: Yup.string().required
+                            confirmNewPassword: Yup.string().required("Required")
                             .oneOf([Yup.ref("newPassword")], "Passwords must match")
                         })
                     }
                     onSubmit={(values, {setSubmitting, setFieldError}) => {
                         
-                        resetPassword(values, history, setFieldError, setSubmitting)
+                        resetPassword(values, history, setFieldError, setSubmitting, accessToken)
                     }}
                 >
                     {({isSubmitting}) => (
@@ -58,7 +58,7 @@ const PasswordReset = ({loginUser}) => {
                             />
 
                             <TextInput 
-                                name="confirmNewpassword"
+                                name="confirmNewPassword"
                                 type="password"
                                 label="Confirm New Password"
                                 placeholder="********"

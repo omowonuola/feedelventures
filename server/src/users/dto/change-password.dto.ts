@@ -22,7 +22,7 @@ export class ChangePasswordDto {
       message: 'password is too weak',
     },
   )
-  readonly password: string;
+  readonly newPassword: string;
 
   @ApiProperty({
     example: 'Johndoe@12',
@@ -30,5 +30,5 @@ export class ChangePasswordDto {
   })
   @IsNotEmpty()
   @IsString()
-  readonly confirmPassword: string;
+  readonly confirmNewPassword: string;
 }
