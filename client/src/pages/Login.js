@@ -16,10 +16,10 @@ import {FiMail, FiLock} from 'react-icons/fi';
 // auth & redux
 import {connect} from 'react-redux';
 import { loginUser } from '../auth/actions/userActions';
-import {useNavigate} from "react-router-dom";
+import {useHistory} from "react-router-dom";
 
 const Login = ({loginUser}) => {
-    const navigate = useNavigate()
+    const history = useHistory()
     return (
         <div>
             <StyledFormArea>
@@ -40,8 +40,8 @@ const Login = ({loginUser}) => {
                         })
                     }
                     onSubmit={(values, {setSubmitting, setFieldError}) => {
-                        console.log(values)
-                        loginUser(values, navigate, setFieldError, setSubmitting)
+                        
+                        loginUser(values, history, setFieldError, setSubmitting)
                     }}
                 >
                     {({isSubmitting}) => (

@@ -3,7 +3,15 @@ import { StyledTitle, StyledSubTitle, Avatar, StyledButton, ButtonGroup, StyledF
 // Logo
 import Logo from "./../assets/logo.png"
 
-const Dashboard = () => {
+// auth & redux
+import { connect } from 'react-redux'
+import { logoutUser } from "../auth/actions/userActions";
+import {useHistory} from 'react-router-dom'
+import React, { useState } from 'react';
+
+const Dashboard = ({logoutUser}) => {
+    const [buttonColor, setButtonColor] = useState("green");
+    const history = useHistory()
     return (
         <div>
             <div
@@ -22,20 +30,24 @@ const Dashboard = () => {
             </div>
             <StyledFormArea bg={colors.dark2}>
                 <StyledTitle size={65}>
-                    Welcome To Test App
+                    Welcome To Color Changing App
                 </StyledTitle>
-                <StyledSubTitle size={27}>
-                    Explore
-                </StyledSubTitle>
+                    <StyledButton
+                        to="#"
+                        onClick={() => {
+                            setButtonColor(buttonColor === "green" ? "red" : "green");
+                        }}
+                        style={{ backgroundColor: buttonColor }}
+                    >
+                        Change The Color Of This Button
+                    </StyledButton>
+
+                <ButtonGroup>
+                    <StyledButton to="#" onClick={() => logoutUser(history)}>Logout</StyledButton>
+                </ButtonGroup>
             </StyledFormArea>
-
-
-            <ButtonGroup>
-                <StyledButton to="#">Logout</StyledButton>
-            </ButtonGroup>
-
         </div>
     )
 }
 
-export default Dashboard;
+export default connect(null, {logoutUser})(Dashboard);

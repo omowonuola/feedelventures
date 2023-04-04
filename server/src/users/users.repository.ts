@@ -26,9 +26,7 @@ export class UserRepository {
     private jwtService: JwtService, // private mailerService: Mailer,
   ) {}
 
-  async createUser(
-    userCredentialsDto: UserCredentialsDto,
-  ): Promise<UserEntity> {
+  async createUser(userCredentialsDto: UserCredentialsDto): Promise<any> {
     const { username, email, password } = userCredentialsDto;
 
     const salt = await bcrypt.genSalt();
@@ -41,10 +39,12 @@ export class UserRepository {
     });
 
     try {
-      return await this.userEntity.save(user);
+      //   return await this.userEntity.save(user);
+      const saveUser = await this.userEntity.save(user);
+      return { status: 'SUCCESS', saveUser };
     } catch (error) {
       if (error.code === 'ER_DUP_ENTRY') {
-        // checking for duplicate username
+        // checking for duplicate username/email
         throw new ConflictException('Username/Email already exists');
         // checking for all required fields filled
       } else if (error.code === 'ER_NO_DEFAULT_FOR_FIELD') {
@@ -61,7 +61,6 @@ export class UserRepository {
       throw new UnauthorizedException('Please add email and password');
     }
     const user = await this.userEntity.findOne({ where: { email } });
-    console.log(user.id);
 
     if (user && (await bcrypt.compare(password, user.password))) {
       const payload: JwtPayload = { email };
@@ -81,7 +80,6 @@ export class UserRepository {
     const user = await this.userEntity.findOne({ where: { email } });
 
     if (!user) return 'invalid email';
-    // const payload: JwtPayload = { email };
     const accessToken: string = this.jwtService.sign(
       { id: user.id },
       { expiresIn: '20m' },

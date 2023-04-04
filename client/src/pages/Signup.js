@@ -19,10 +19,10 @@ import {FiMail, FiLock, FiUser} from 'react-icons/fi';
 // auth & redux
 import {connect} from 'react-redux';
 import { signUpUser } from '../auth/actions/userActions';
-import {useNavigate} from "react-router-dom";
+import {useHistory} from "react-router-dom";
 
 const Signup = ({signUpUser}) => {
-    const history = useNavigate()
+    const history = useHistory()
     return (
         <div>
             <StyledFormArea>
@@ -41,7 +41,7 @@ const Signup = ({signUpUser}) => {
                             email: Yup.string().email("Invalid email address")
                             .required("Required"),
                             password: Yup.string().required("Required"),
-                            uername: Yup.string()
+                            username: Yup.string()
 
                         })
                     }
