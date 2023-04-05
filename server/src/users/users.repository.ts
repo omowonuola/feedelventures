@@ -8,8 +8,8 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { UserEntity } from './user.entity';
-import { UserCredentialsDto } from './dto/user-credentials.dto';
+import { UserEntity } from './users.entity';
+import { UserCredentialsDto } from './dto/users-credentials.dto';
 import { ForgotPasswordDto } from './dto/forgot-password.dto';
 import { MailService } from '../mail/nodemailer.service';
 import * as bcrypt from 'bcrypt';

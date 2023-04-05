@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { ChangePasswordDto } from './dto/change-password.dto';
 import { ForgotPasswordDto } from './dto/forgot-password.dto';
-import { UserCredentialsDto } from './dto/user-credentials.dto';
-import { UserEntity } from './user.entity';
+import { UserCredentialsDto } from './dto/users-credentials.dto';
+import { UserEntity } from './users.entity';
 import { UserRepository } from './users.repository';
 
 @Injectable()

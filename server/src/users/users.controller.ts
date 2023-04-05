@@ -1,8 +1,8 @@
 import { Body, Controller, Param, Patch, Post } from '@nestjs/common';
 import { UserService } from './users.service';
-import { UserCredentialsDto } from './dto/user-credentials.dto';
+import { UserCredentialsDto } from './dto/users-credentials.dto';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { UserEntity } from './user.entity';
+import { UserEntity } from './users.entity';
 import { ForgotPasswordDto } from './dto/forgot-password.dto';
 import { ChangePasswordDto } from './dto/change-password.dto';
 

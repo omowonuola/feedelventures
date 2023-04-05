@@ -6,7 +6,7 @@ import { JwtModule } from '@nestjs/jwt';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserRepository } from './users.repository';
 import { JwtStrategy } from './jwt-passport';
-import { UserEntity } from './user.entity';
+import { UserEntity } from './users.entity';
 import { MailModule } from '../mail/mail.modules';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 

@@ -1,9 +1,9 @@
 import { Test } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { JwtService } from '@nestjs/jwt';
-import { UserEntity } from './users/user.entity';
+import { UserEntity } from './users/users.entity';
 import { UserRepository } from './users/users.repository';
-import { UserCredentialsDto } from './users/dto/user-credentials.dto';
+import { UserCredentialsDto } from './users/dto/users-credentials.dto';
 import {
   ConflictException,
   InternalServerErrorException,
