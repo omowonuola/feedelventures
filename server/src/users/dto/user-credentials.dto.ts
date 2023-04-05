@@ -14,10 +14,10 @@ export class UserCredentialsDto {
     example: 'arieli',
     description: 'Username',
   })
-  @IsString()
   @IsOptional()
-  @MinLength(4)
-  @MaxLength(20)
+  @IsString()
+  // @MinLength(4)
+  // @MaxLength(20)
   username: string;
 
   @ApiProperty({

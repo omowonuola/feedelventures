@@ -3,8 +3,6 @@ import {
   InternalServerErrorException,
   Logger,
   NotFoundException,
-  Req,
-  Res,
   UnauthorizedException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -24,7 +22,7 @@ export class UserRepository {
     @InjectRepository(UserEntity)
     private userEntity: Repository<UserEntity>,
     private jwtService: JwtService,
-    private mailerService: MailService,
+    private readonly mailerService: MailService,
   ) {}
 
   async createUser(userCredentialsDto: UserCredentialsDto): Promise<any> {
@@ -91,10 +89,10 @@ export class UserRepository {
       { id: user.id },
       { expiresIn: expirationTimeStamp },
     );
-    const data = await this.mailerService.sendEmail({ email, accessToken });
-    if (data) {
-      return { status: 'SUCCESS', message: 'Password Reset Email Sent' };
-    }
+    // const data = await this.mailerService.sendEmail({ email, accessToken });
+    // if (data) {
+    //   return { status: 'SUCCESS', message: 'Password Reset Email Sent' };
+    // }
   }
 
   async changePassword(
@@ -108,9 +106,16 @@ export class UserRepository {
     } else if (newPassword !== confirmNewPassword) {
       throw new UnauthorizedException('Password must match');
     }
-    const decryptToken = JSON.parse(
-      Buffer.from(accessToken.split('.')[1], 'base64').toString(),
-    );
+
+    if (!accessToken) {
+      throw new UnauthorizedException('Access token is missing');
+    }
+
+    const parts = accessToken.split('.');
+    if (parts.length !== 3) {
+      throw new UnauthorizedException('Invalid access token');
+    }
+    const decryptToken = JSON.parse(Buffer.from(parts[1], 'base64').toString());
 
     const id = decryptToken.id;
 
