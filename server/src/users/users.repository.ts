@@ -1,5 +1,6 @@
 import {
   ConflictException,
+  Injectable,
   InternalServerErrorException,
   Logger,
   NotFoundException,
@@ -22,7 +23,7 @@ export class UserRepository {
     @InjectRepository(UserEntity)
     private userEntity: Repository<UserEntity>,
     private jwtService: JwtService,
-    private readonly mailerService: MailService,
+    private mailerService: MailService,
   ) {}
 
   async createUser(userCredentialsDto: UserCredentialsDto): Promise<any> {

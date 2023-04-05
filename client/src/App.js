@@ -18,7 +18,7 @@ import PasswordReset from "./pages/passwordReset";
 
 function App({checked}) {
   return (
-    <Router>
+    <Router basename="/allwellclient">
       {checked &&
         <StyledContainer>
           <Switch>

@@ -4,6 +4,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserEntity } from './users/user.entity';
 import { UsersModule } from './users/users.module';
 import { configValidationSchema } from './config.schema';
+import { MailModule } from './mail/mail.modules';
 
 @Module({
   imports: [
@@ -12,6 +13,7 @@ import { configValidationSchema } from './config.schema';
       validationSchema: configValidationSchema,
     }),
     UsersModule,
+
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
@@ -26,6 +28,7 @@ import { configValidationSchema } from './config.schema';
         synchronize: true,
       }),
     }),
+    MailModule,
   ],
 })
 export class AppModule {}
