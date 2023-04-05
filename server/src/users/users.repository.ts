@@ -81,7 +81,7 @@ export class UserRepository {
 
     if (!user) throw new UnauthorizedException('invalid email');
 
-    // to calculate the time for JWT token to expire
+    // to calculate the time for JWT token to expire after 20min
     const now = new Date();
     const expirationTime = now.getTime() + 20 * 60 * 1000; // adding 20 minutes in milliseconds
     const expirationTimeStamp = Math.floor(expirationTime / 1000);
