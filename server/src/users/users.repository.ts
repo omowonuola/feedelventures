@@ -82,17 +82,17 @@ export class UserRepository {
 
     // to calculate the time for JWT token to expire
     const now = new Date();
-    const expirationTime = now.getTime() + 20 * 60 * 1000; // add 20 minutes in milliseconds
+    const expirationTime = now.getTime() + 20 * 60 * 1000; // adding 20 minutes in milliseconds
     const expirationTimeStamp = Math.floor(expirationTime / 1000);
 
     const accessToken: string = this.jwtService.sign(
       { id: user.id },
       { expiresIn: expirationTimeStamp },
     );
-    // const data = await this.mailerService.sendEmail({ email, accessToken });
-    // if (data) {
-    //   return { status: 'SUCCESS', message: 'Password Reset Email Sent' };
-    // }
+    const data = await this.mailerService.sendEmail({ email, accessToken });
+    if (data) {
+      return { status: 'SUCCESS', message: 'Password Reset Email Sent' };
+    }
   }
 
   async changePassword(
