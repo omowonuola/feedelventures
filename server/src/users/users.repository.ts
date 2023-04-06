@@ -1,6 +1,5 @@
 import {
   ConflictException,
-  Injectable,
   InternalServerErrorException,
   Logger,
   NotFoundException,
@@ -141,11 +140,4 @@ export class UserRepository {
       return { status: 'SUCCESS', userDetails };
     }
   }
-
-  // async logout(@Req() request: Request): Promise<any> {
-  //   request.session.destroy();
-
-  //   // response.clearCookie('access_token');
-  //   // response.sendStatus(200);
-  // }
 }

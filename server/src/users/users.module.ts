@@ -9,10 +9,12 @@ import { JwtStrategy } from './jwt-passport';
 import { UserEntity } from './users.entity';
 import { MailModule } from '../mail/mail.modules';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { MailerModule } from '@nestjs-modules/mailer';
 
 @Module({
   imports: [
     ConfigModule,
+    MailerModule,
     MailModule,
     PassportModule.register({ defaultStrategy: 'jwt' }),
     JwtModule.registerAsync({

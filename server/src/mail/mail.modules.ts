@@ -1,5 +1,5 @@
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { MailerModule } from '@nestjs-modules/mailer';
+import { MailerModule, MailerService } from '@nestjs-modules/mailer';
 import { Module } from '@nestjs/common';
 import { MailService } from './nodemailer.service';
 import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handlebars.adapter';
@@ -7,6 +7,7 @@ import { join } from 'path';
 
 @Module({
   imports: [
+    ConfigModule.forRoot(),
     MailerModule.forRootAsync({
       imports: [ConfigModule],
       useFactory: async (config: ConfigService) => ({
@@ -31,7 +32,6 @@ import { join } from 'path';
       }),
       inject: [ConfigService],
     }),
-    ConfigModule.forRoot(),
   ],
   providers: [MailService],
   exports: [MailService],

@@ -1,9 +1,9 @@
 import { Test } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { JwtService } from '@nestjs/jwt';
-import { UserEntity } from './users/users.entity';
-import { UserRepository } from './users/users.repository';
-import { UserCredentialsDto } from './users/dto/users-credentials.dto';
+import { UserEntity } from './users.entity';
+import { UserRepository } from './users.repository';
+import { UserCredentialsDto } from './dto/users-credentials.dto';
 import {
   ConflictException,
   InternalServerErrorException,
@@ -11,7 +11,10 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
-import { ChangePasswordDto } from './users/dto/change-password.dto';
+import { ChangePasswordDto } from './dto/change-password.dto';
+import { MailModule } from '../mail/mail.modules';
+import { MailService } from '../mail/nodemailer.service';
+import { MailerModule } from '@nestjs-modules/mailer';
 
 describe('UsersService', () => {
   let usersService: UserRepository;
@@ -19,14 +22,30 @@ describe('UsersService', () => {
   let jwtService: JwtService;
 
   const jwtServiceMock = {
-    sign: jest.fn(),
+    sign: jest.fn(() => 'access_token'),
   };
 
   beforeEach(async () => {
     const moduleRef = await Test.createTestingModule({
+      imports: [
+        // RootTestModule,
+        MailerModule.forRootAsync({
+          useFactory: () => ({
+            transport: {
+              host: 'smtp.mailtrap.io',
+              port: 2525,
+              auth: {
+                user: 'your-username',
+                pass: 'your-password',
+              },
+            },
+          }),
+        }),
+      ],
       providers: [
         UserRepository,
         JwtService,
+        MailService,
         {
           provide: getRepositoryToken(UserEntity),
           useValue: {
@@ -160,7 +179,7 @@ describe('UsersService', () => {
         password: await bcrypt.hash('password', 10),
       };
       jest.spyOn(userRepositoryMock, 'findOne').mockResolvedValueOnce(user);
-      jest.spyOn(jwtService, 'sign').mockReturnValueOnce('access_token');
+      jest.spyOn(jwtServiceMock, 'sign').mockReturnValueOnce('access_token');
 
       const result = await usersService.signInUser(userCredentialsDto);
 
