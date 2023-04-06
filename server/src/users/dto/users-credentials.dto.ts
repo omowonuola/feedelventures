@@ -16,8 +16,8 @@ export class UserCredentialsDto {
   })
   @IsOptional()
   @IsString()
-  // @MinLength(4)
-  // @MaxLength(20)
+  @MinLength(4)
+  @MaxLength(20)
   username: string;
 
   @ApiProperty({
@@ -36,11 +36,5 @@ export class UserCredentialsDto {
   @IsString()
   @MinLength(8)
   @MaxLength(32)
-  // @Matches(
-  //   /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,10}$/,
-  //   {
-  //     message: 'password is too weak',
-  //   },
-  // )
   password: string;
 }
