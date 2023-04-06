@@ -44,7 +44,10 @@ describe('UsersService', () => {
       ],
       providers: [
         UserRepository,
-        JwtService,
+        {
+          provide: JwtService,
+          useValue: jwtServiceMock,
+        },
         MailService,
         {
           provide: getRepositoryToken(UserEntity),
@@ -251,7 +254,7 @@ describe('UsersService', () => {
       const user = {
         id: 1,
         email: 'test@test.com',
-        password: await bcrypt.hash('password', 10),
+        password: await bcrypt.hash('password', 10), 
       };
       jest.spyOn(userRepositoryMock, 'findOne').mockResolvedValueOnce(user);
       const signSpy = jest
